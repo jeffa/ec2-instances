@@ -23,10 +23,12 @@ Currently supports the following:
 
 Dependencies
 --------
-    * generate credentials for your AWS account
-    * create a public key for your RSA key pair.
-    * create security groups for SSH and HTTP access
-    * export vars:
+* generate credentials for your AWS account
+* create a public key for your RSA key pair.
+* create security groups for SSH and HTTP access
+* uses `/etc/ansible/hosts` for Ansible inventory
+* export vars:
+
 ```
 export TF_VAR_aws_credentials=$HOME/.aws/credentials
 export TF_VAR_id_rsa_path=$HOME/.ssh/id_rsa.pub
@@ -56,4 +58,5 @@ terraform show | grep '_ssh =' | cut -d= -f2 | xargs -n1 curl
 
 Known Issues
 ------------
-The Suse package installer zypper is failing to install nginx.
+* The Suse package installer zypper is failing to install nginx.
+* Copious overusage of `sleep` to reduce chances of race conditions 
