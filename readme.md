@@ -10,6 +10,10 @@ Synopsis
 --------
 This is my starter kit for launching any number of Linux flavors for the purpose of setting up demos and trying out new packages.
 
+After running Terraform you should be able to immediately ssh into the instance(s) created.
+
+After running Ansible you should be able to access the web server running on port 80.
+
 Currently supports the following:
   * AWS Linux
   * Debian
@@ -17,20 +21,26 @@ Currently supports the following:
   * Suse
   * Ubuntu
 
-ENV Vars
+Dependencies
 --------
+    * generate credentials for your AWS account
+    * create a public key for your RSA key pair.
+    * create security groups for SSH and HTTP access
+    * export vars:
 ```
 export TF_VAR_aws_credentials=$HOME/.aws/credentials
 export TF_VAR_id_rsa_path=$HOME/.ssh/id_rsa.pub
+export TF_VAR_ssh_security_group=sg-*****************
+export TF_VAR_http_security_group=sg-*****************
 ```
 
 Terraform Plan Examples
 -----------------------
 ```
-# defaults to all one of each server type
+# defaults to all (one of each server type)
 terraform plan
 
-# specify one or more
+# specify one or more servers
 terraform plan -var 'server=["ubuntu"]'
 terraform plan -var 'server=["red_hat","debian"]'
 ```
