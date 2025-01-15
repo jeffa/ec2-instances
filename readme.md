@@ -43,8 +43,8 @@ Terraform Plan Examples
 terraform plan
 
 # specify one or more servers
-terraform plan -var 'server=["ubuntu"]'
-terraform plan -var 'server=["red_hat","debian"]'
+terraform plan -var 'servers=["ubuntu"]'
+terraform plan -var 'servers=["red_hat","debian"]'
 ```
 
 Runbook Example 
