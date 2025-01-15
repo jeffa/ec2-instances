@@ -10,7 +10,7 @@ variable "security_groups" {
 }
 
 variable "ssh_rsa" {
-  description = "The public key to inject into server's known hosts file."
+  description = "The public key to inject into instances's known hosts file."
   type        = string
 }
 

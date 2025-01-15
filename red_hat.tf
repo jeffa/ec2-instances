@@ -1,5 +1,5 @@
 locals {
-  red_hat_servers = [for name in var.server : name if name == "red_hat"]
+  red_hat_server = [for name in var.servers : name if name == "red_hat"]
 }
 
 module "red_hat" {
@@ -10,7 +10,7 @@ module "red_hat" {
     ami             = "ami-0583d8c7a9c35822c"
     servername      = "Red-Hat"
 
-    for_each = toset(local.red_hat_servers)
+    for_each = toset(local.red_hat_server)
 }
 
 output "red_hat_ssh" {

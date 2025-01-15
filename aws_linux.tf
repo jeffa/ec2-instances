@@ -1,5 +1,5 @@
 locals {
-  aws_linux_servers = [for name in var.server : name if name == "aws_linux"]
+  aws_linux_server = [for name in var.servers : name if name == "aws_linux"]
 }
 
 module "aws_linux" {
@@ -10,7 +10,7 @@ module "aws_linux" {
     ami             = "ami-06b21ccaeff8cd686"
     servername      = "Amazon-Linux"
     
-    for_each = toset(local.aws_linux_servers)
+    for_each = toset(local.aws_linux_server)
 }
 
 output "aws_linux_ssh" {

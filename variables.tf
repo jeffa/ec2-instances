@@ -24,8 +24,8 @@ variable "http_security_group" {
   type        = string
 }
 
-variable "server" {
-  description = "Server to configure."
+variable "servers" {
+  description = "Servers to configure."
   type        = list(string)
   default     = ["aws_linux","debian","red_hat","suse","ubuntu"]
 }

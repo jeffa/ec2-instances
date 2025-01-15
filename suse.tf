@@ -1,5 +1,5 @@
 locals {
-  suse_servers = [for name in var.server : name if name == "suse"]
+  suse_server = [for name in var.servers : name if name == "suse"]
 }
 
 module "suse" {
@@ -10,7 +10,7 @@ module "suse" {
     ami             = "ami-0cd60fd97301e4b49"
     servername      = "SUSE-Linux"
 
-    for_each = toset(local.suse_servers)
+    for_each = toset(local.suse_server)
 }
 
 output "suse_ssh" {

@@ -1,5 +1,5 @@
 locals {
-  debian_servers = [for name in var.server : name if name == "debian"]
+  debian_server = [for name in var.servers : name if name == "debian"]
 }
 
 module "debian" {
@@ -11,7 +11,7 @@ module "debian" {
     username        = "admin"
     servername      = "Debian"
 
-    for_each = toset(local.debian_servers)
+    for_each = toset(local.debian_server)
 }
 
 output "debian_ssh" {

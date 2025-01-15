@@ -1,5 +1,5 @@
 locals {
-  ubuntu_servers = [for name in var.server : name if name == "ubuntu"]
+  ubuntu_server = [for name in var.servers : name if name == "ubuntu"]
 }
 
 module "ubuntu" {
@@ -11,7 +11,7 @@ module "ubuntu" {
     username        = "ubuntu"
     servername      = "Ubuntu"
 
-    for_each = toset(local.ubuntu_servers)
+    for_each = toset(local.ubuntu_server)
 }
 
 output "ubuntu_ssh" {
