@@ -1,0 +1,45 @@
+<html>
+<head>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
+<script src="https://www.unlocalhost.com/assets/js/custom_ajax.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+<script>
+function fetch_board() {
+
+    var params = [
+        {name: "blanks",    value: document.config.blanks.value},
+        {name: "attempts",  value: document.config.attempts.value},
+        {name: "jquery",    value: "https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"},
+    ];
+
+    var url  = ['https://jeffa.unlocalhost.com/sudoku', $.param( params )].join('?');
+    _ajaxGET( url, '#sudoku', 'board' );
+}
+</script>
+</head>
+
+<body>
+<form action="javascript:void(0);" id="config" name="config" class="navbar-config">
+
+  <table>
+  <tr>
+    <td>blanks</td>
+    <td><input type="text" name="blanks" value="50" /></td>
+  </tr>
+  <tr>
+    <td>attempts</td>
+    <td><input type="text" name="attempts" value="2" /></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td><input type="submit" name="generate" value="Generate" onClick="javascript: fetch_board()" /></td>
+  </tr>
+  </table>
+
+</form>
+
+<div id="sudoku"></div>
+
+</body>
+</html>
