@@ -9,7 +9,7 @@ resource "aws_instance" "host" {
 
     vpc_security_group_ids = var.security_groups
     tags = {
-        Name = var.servername
+        Name = var.instance_name
     }
 
     provisioner "local-exec" {
@@ -17,7 +17,7 @@ resource "aws_instance" "host" {
     }
 
     provisioner "local-exec" {
-      command = "echo ${var.servername} id=${self.id} ansible_host=${self.public_ip} ansible_user=${var.username} >> /etc/ansible/hosts"
+      command = "echo ${var.instance_name} id=${self.id} ansible_host=${self.public_ip} ansible_user=${var.username} >> /etc/ansible/hosts"
     }
 
     provisioner "local-exec" {

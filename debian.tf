@@ -9,7 +9,7 @@ module "debian" {
     security_groups = [var.ssh_security_group, var.http_security_group]
     ami             = "ami-064519b8c76274859"
     username        = "admin"
-    servername      = "Debian"
+    instance_name      = "Debian"
 
     for_each = toset(local.debian_server)
 }

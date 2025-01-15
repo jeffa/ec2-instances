@@ -25,7 +25,7 @@ variable "username" {
   default     = "ec2-user"
 }
 
-variable "servername" {
+variable "instance_name" {
   description = "Tag Name to assign."
   type        = string
 }

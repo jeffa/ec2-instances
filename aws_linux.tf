@@ -8,7 +8,7 @@ module "aws_linux" {
     ssh_rsa         = file(var.id_rsa_path)
     security_groups = [var.ssh_security_group, var.http_security_group]
     ami             = "ami-06b21ccaeff8cd686"
-    servername      = "Amazon-Linux"
+    instance_name      = "Amazon-Linux"
     
     for_each = toset(local.aws_linux_server)
 }
