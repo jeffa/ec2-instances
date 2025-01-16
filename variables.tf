@@ -8,6 +8,12 @@ variable "id_rsa_path" {
   type        = string
 }
 
+variable "ansible_inv_path" {
+  description = "Location of local Ansible inventory file."
+  type        = string
+  default     = "/etc/ansible/hosts"
+}
+
 variable "aws_region" {
   description = "Physical cluster of data centers."
   type        = string

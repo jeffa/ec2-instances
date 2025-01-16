@@ -17,11 +17,11 @@ resource "aws_instance" "host" {
     }
 
     provisioner "local-exec" {
-      command = "echo ${var.instance_name} id=${self.id} ansible_host=${self.public_ip} ansible_user=${var.username} >> /etc/ansible/hosts"
+      command = "echo ${var.instance_name} id=${self.id} ansible_host=${self.public_ip} ansible_user=${var.username} >> ${ansible_inv_path}"
     }
 
     provisioner "local-exec" {
-      command = "sleep $((RANDOM % 20)); sed -i \"\" '/${self.id}/d' /etc/ansible/hosts"
+      command = "sleep $((RANDOM % 20)); sed -i \"\" '/${self.id}/d' ${ansible_inv_path}"
       when = destroy
     }
 }
