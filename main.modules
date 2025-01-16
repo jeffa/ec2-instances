@@ -4,7 +4,7 @@ resource "aws_instance" "host" {
 
     user_data = <<-EOF
         #!/bin/bash
-        echo "${var.ssh_rsa}" > /home/${var.username}/.ssh/authorized_keys
+        echo "${var.ssh_rsa}" >> /home/${var.username}/.ssh/authorized_keys
         EOF
 
     vpc_security_group_ids = var.security_groups
@@ -25,4 +25,3 @@ resource "aws_instance" "host" {
       when = destroy
     }
 }
-
