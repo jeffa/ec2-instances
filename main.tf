@@ -1,7 +1,3 @@
-locals {
-    instance_type   = "t2.micro"
-}
-
 terraform {
   required_providers {
     aws = {

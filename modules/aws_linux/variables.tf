@@ -1,7 +1,6 @@
 variable "instance_type" {
   description = "Type and size of instance."
   type        = string
-  default     = "t2.micro"
 }
 
 variable "security_groups" {

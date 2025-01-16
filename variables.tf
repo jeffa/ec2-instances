@@ -29,3 +29,10 @@ variable "servers" {
   type        = list(string)
   default     = ["aws_linux","debian","red_hat","suse","ubuntu"]
 }
+
+variable "instance_type" {
+  description = "Type and size of instance."
+  type        = string
+  default     = "t2.micro"
+}
+

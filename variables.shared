@@ -1,9 +1,3 @@
-variable "instance_type" {
-  description = "Type and size of instance."
-  type        = string
-  default     = "t2.micro"
-}
-
 variable "security_groups" {
   description = "List of Security Group IDs to allow open ports."
   type        = list(string)
@@ -23,6 +17,11 @@ variable "username" {
   description = "The name of default user on distro."
   type        = string
   default     = "ec2-user"
+}
+
+variable "instance_type" {
+  description = "Type and size of instance."
+  type        = string
 }
 
 variable "instance_name" {

@@ -4,7 +4,7 @@ locals {
 
 module "ubuntu" {
     source          = "./modules/ubuntu"
-    instance_type   = local.instance_type
+    instance_type   = var.instance_type
     ssh_rsa         = file(var.id_rsa_path)
     security_groups = [var.ssh_security_group, var.http_security_group]
     ami             = "ami-0866a3c8686eaeeba"
