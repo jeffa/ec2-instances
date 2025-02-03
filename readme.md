@@ -54,7 +54,7 @@ Runbook Example
 ```
 terraform plan -out run.me
 terraform apply run.me
-ansible-playbook ansible/ungrouped.yaml
+ansible-playbook ansible/nginx.yaml
 terraform show | grep '_ssh =' | cut -d= -f2 | xargs -n1 curl -I
 terraform destroy -auto-approve
 ```
