@@ -13,6 +13,10 @@ module "suse" {
     for_each = toset(local.suse_server)
 }
 
+output "suse_user" {
+    value = length(module.suse) > 0 ? module.suse["suse"].username : ""
+}
+
 output "suse_ssh" {
     value = length(module.suse) > 0 ? module.suse["suse"].public_ip : ""
 }

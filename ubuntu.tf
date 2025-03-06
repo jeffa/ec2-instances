@@ -9,9 +9,13 @@ module "ubuntu" {
     security_groups = [var.ssh_security_group, var.http_security_group]
     ami             = "ami-0866a3c8686eaeeba"
     username        = "ubuntu"
-    instance_name      = "Ubuntu"
+    instance_name   = "Ubuntu"
 
     for_each = toset(local.ubuntu_server)
+}
+
+output "ubuntu_user" {
+    value = length(module.ubuntu) > 0 ? module.ubuntu["ubuntu"].username : ""
 }
 
 output "ubuntu_ssh" {

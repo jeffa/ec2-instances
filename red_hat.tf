@@ -13,6 +13,10 @@ module "red_hat" {
     for_each = toset(local.red_hat_server)
 }
 
+output "red_hat_user" {
+    value = length(module.red_hat) > 0 ? module.red_hat["red_hat"].username : ""
+}
+
 output "red_hat_ssh" {
     value = length(module.red_hat) > 0 ? module.red_hat["red_hat"].public_ip : ""
 }
