@@ -28,7 +28,12 @@ Dependencies
 * generate credentials for your AWS account
 * create a public key for SSH access
 * create security groups for SSH and HTTP access
-* uses `/etc/ansible/hosts` for Ansible inventory
+* uses `/etc/ansible/hosts` for Ansible inventory:
+```
+sudo mkdir /etc/ansible
+sudo touch /etc/ansible/hosts
+sudo chown -R $USER /etc/ansible/
+```
 * export vars:
 
 ```
