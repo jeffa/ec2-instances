@@ -4,7 +4,7 @@ Terraform/Ansible starter kit for AWS
 
 Description
 -----------
-Launch EC2 instances and install nginx on them.
+Launch ssh ready EC2 instances via Terrform and provision them with Ansible (currently installs nginx).
 
 Synopsis
 --------
@@ -26,8 +26,8 @@ Currently supports the following:
 Dependencies
 --------
 * generate credentials for your AWS account
-* create a public key for SSH access
 * create security groups for SSH and HTTP access
+* create a public key for SSH access
 * uses `/etc/ansible/hosts` for Ansible inventory:
 ```
 sudo mkdir /etc/ansible
@@ -61,7 +61,7 @@ terraform plan -out run.me
 terraform apply run.me
 ansible-playbook ansible/nginx.yaml
 terraform show | grep '_ssh =' | cut -d= -f2 | xargs -n1 curl -I
-terraform destroy -auto-approve
+# terraform destroy -auto-approve
 ```
 
 Known Issues
