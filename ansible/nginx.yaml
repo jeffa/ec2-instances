@@ -4,7 +4,7 @@
   become: true
   tasks:
     - name: create directories if they don't exist
-      file:
+      ansible.builtin.file:
         path: "{{ item }}"
         state: directory
         owner: root
@@ -15,23 +15,23 @@
         - /etc/nginx/sites-enabled
         - /usr/share/nginx/html
     - name: Ensure nginx is installed
-      package:
+      ansible.builtin.package:
         name: nginx
         update_cache: true
     - name: Copy nginx config file
-      copy:
+      ansible.builtin.copy:
         src: nginx.conf
         dest: /etc/nginx/sites-available/default
     - name: Enable configuration
-      file:
+      ansible.builtin.file:
         src: /etc/nginx/sites-available/default
         dest: /etc/nginx/sites-enabled/default
         state: link
     - name: Copy home page template
-      template:
+      ansible.builtin.template:
         src: index.html.j2
         dest: /usr/share/nginx/html/index.html
     - name: Restart nginx
-      service:
+      ansible.builtin.service:
         name: nginx
         state: restarted
