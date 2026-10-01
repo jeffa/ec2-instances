@@ -1,6 +1,6 @@
 # WordPress on Docker: first deployment guide
 
-This guide starts with an Ubuntu EC2 instance that already has Docker installed. It walks through launching WordPress, connecting it to MySQL, and deploying a custom frontend as a WordPress theme.
+This guide starts with an Ubuntu EC2 instance that has Docker installed and no other web server running. It walks through launching WordPress, connecting it to MySQL, and deploying a custom frontend as a WordPress theme.
 
 The deliberately small first milestone is:
 
@@ -15,14 +15,14 @@ Do not add Compose, custom images, reverse proxies, HTTPS, or automated deployme
 
 ## Before starting
 
-You need an Ubuntu EC2 instance with Docker installed, SSH access, and security-group rules allowing TCP 22 and TCP 8080 from your IP address. The commands below use placeholder passwords. Replace them with temporary values and do not commit real passwords to Git.
+You need an Ubuntu EC2 instance with Docker installed, SSH access, and security-group rules allowing TCP 22 from your IP address and TCP 80 from the internet. Keep SSH restricted to your own address. The commands below use placeholder passwords. Replace them with temporary values and do not commit real passwords to Git.
 
 ## The architecture
 
 ```text
 Browser
    |
-   | EC2 public IP:8080
+   | EC2 public IP:80
    v
 WordPress container (Apache + PHP)
    |
@@ -96,7 +96,7 @@ docker run -d \
   --name wordpress \
   --network wordpress-network \
   --restart unless-stopped \
-  -p 8080:80 \
+  -p 80:80 \
   -e WORDPRESS_DB_HOST=wp-db:3306 \
   -e WORDPRESS_DB_USER=wordpress \
   -e WORDPRESS_DB_PASSWORD='change-this-password' \
@@ -119,7 +119,7 @@ The official image documents this configuration, persistent volumes, Apache/FPM 
 Visit:
 
 ```text
-http://YOUR_EC2_PUBLIC_IP:8080
+http://YOUR_EC2_PUBLIC_IP
 ```
 
 Complete the normal WordPress installation form and create a test administrator account.
@@ -130,10 +130,10 @@ If the page does not load, inspect the containers and listeners:
 docker ps
 docker logs wordpress
 docker logs wp-db
-sudo ss -ltnp | grep ':8080'
+sudo ss -ltnp | grep ':80'
 ```
 
-Port 8080 is intentional. If Apache is already running directly on the EC2 host and listening on port 80, `-p 80:80` would conflict with it. Check port 80 with `sudo ss -ltnp | grep ':80'`.
+Port 80 is intentional because this test instance is expected to run Docker only. If another service is already listening on port 80, stop or remove that service before starting the WordPress container.
 
 ## Turn the frontend into a WordPress theme
 
@@ -189,7 +189,7 @@ docker exec wordpress \
   chown -R www-data:www-data /var/www/html/wp-content/themes/my-theme
 ```
 
-Open `http://YOUR_EC2_PUBLIC_IP:8080/wp-admin`, then select `Appearance → Themes → my-theme → Activate`.
+Open `http://YOUR_EC2_PUBLIC_IP/wp-admin`, then select `Appearance → Themes → my-theme → Activate`.
 
 Copying the theme is a good first deployment technique. A bind mount or custom image can provide a faster edit-and-refresh workflow later.
 
@@ -254,7 +254,7 @@ docker exec -it wordpress bash
 ## The simple mental model
 
 ```text
-Browser → EC2:8080 → WordPress container → wp-db:3306 → MySQL container
+Browser → EC2:80 → WordPress container → wp-db:3306 → MySQL container
 ```
 
 The Docker network handles the container-to-container connection. The `WORDPRESS_DB_*` variables tell WordPress how to use it. The named volumes preserve WordPress files and MySQL data. Your theme is the frontend layer loaded from `wp-content/themes`.
