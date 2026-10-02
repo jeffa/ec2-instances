@@ -1,27 +1,27 @@
 locals {
   server_matrix = {
     aws_linux = {
-      ami           = "ami-06b21ccaeff8cd686"
+      ami           = "ami-0d27e0fb3bac4d724"
       username      = "ec2-user"
       instance_name = "Amazon-Linux"
     }
     debian = {
-      ami           = "ami-064519b8c76274859"
+      ami           = "ami-0b75f821522bcff85"
       username      = "admin"
       instance_name = "Debian"
     }
     red_hat = {
-      ami           = "ami-0583d8c7a9c35822c"
+      ami           = "ami-00adafae70b8029d8"
       username      = "ec2-user"
       instance_name = "Red-Hat"
     }
     suse = {
-      ami           = "ami-0cd60fd97301e4b49"
+      ami           = "ami-0b12a86a613a04fc6"
       username      = "ec2-user"
       instance_name = "SUSE-Linux"
     }
     ubuntu = {
-      ami           = "ami-0866a3c8686eaeeba"
+      ami           = "ami-0b6d9d3d33ba97d99"
       username      = "ubuntu"
       instance_name = "Ubuntu"
     }

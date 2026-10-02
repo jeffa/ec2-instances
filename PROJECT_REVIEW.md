@@ -209,6 +209,12 @@ If EC2 remains the target, I would make these changes in order:
 6. Put the nginx work into an Ansible role with handlers: install the package, copy the configuration, notify a handler, and let the handler restart/reload nginx only when the configuration changes.
 7. Add distribution variables or OS-specific task files where package names, service names, paths, or repositories differ. A generic `package` task does not eliminate all distribution differences.
 8. Pin and commit provider dependencies, format and validate in CI, and add a documented AMI update process.
+9. Separate Ansible playbooks or roles by capability, such as Docker and nginx, and use `--limit` or inventory groups so an unsupported distribution/tool combination does not block unrelated tests. For example:
+
+   ```bash
+   ansible-playbook -i ansible-hosts ansible/docker.yaml --limit ubuntu
+   ansible-playbook -i ansible-hosts ansible/nginx.yaml --limit suse
+   ```
 
 This preserves the educational value of the project while removing the most surprising mechanics. It also makes it possible to run Terraform and Ansible from a clean checkout without requiring a writable `/etc` directory.
 
