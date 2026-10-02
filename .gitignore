@@ -5,3 +5,5 @@
 terraform.tfstate
 terraform.tfstate.backup
 TODO
+install-wp.sh
+composer.json
