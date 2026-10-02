@@ -1,6 +1,0 @@
-terraform plan -out=run.me
-terraform apply run.me
-ansible all -i ansible-hosts -m ping
-ansible-playbook -i ansible-hosts ansible/docker.yaml
-terraform destroy
-test ! -e ansible-hosts && echo "inventory removed"
