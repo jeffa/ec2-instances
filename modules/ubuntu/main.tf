@@ -13,7 +13,7 @@ resource "aws_instance" "host" {
     }
 
     provisioner "local-exec" {
-      command = "sleep 60; ssh-keyscan ${self.public_ip} >> ~/.ssh/known_hosts"
+      command = "for attempt in $(seq 1 30); do if ssh-keyscan -T 5 -H ${self.public_ip} 2>/dev/null | grep -q .; then ssh-keyscan -H ${self.public_ip} >> ~/.ssh/known_hosts; exit 0; fi; sleep 2; done; echo 'SSH did not become ready before the timeout' >&2; exit 1"
     }
 
     provisioner "local-exec" {
