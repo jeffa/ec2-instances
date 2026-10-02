@@ -1,3 +1,4 @@
+laminas-input
 .terraform.lock.hcl
 .terraform/
 *.plan
