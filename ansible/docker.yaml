@@ -37,6 +37,27 @@
         update_cache: true
       when: ansible_facts.os_family == "Suse"
 
+    - name: Install Docker Compose v2 on Ubuntu hosts
+      ansible.builtin.apt:
+        name: docker-compose-v2
+        state: present
+        update_cache: true
+      when: ansible_facts.distribution == "Ubuntu"
+
+    - name: Install Docker Compose on Debian hosts
+      ansible.builtin.apt:
+        name: docker-compose
+        state: present
+        update_cache: true
+      when: ansible_facts.distribution == "Debian"
+
+    - name: Install Docker Compose on SUSE-family hosts
+      ansible.builtin.zypper:
+        name: docker-compose
+        state: present
+        update_cache: true
+      when: ansible_facts.os_family == "Suse"
+
     - name: Fail clearly on unsupported operating systems
       ansible.builtin.fail:
         msg: "Docker installation is not defined for {{ ansible_facts.distribution }} ({{ ansible_facts.os_family }})."
@@ -53,3 +74,18 @@
         name: "{{ docker_user }}"
         groups: docker
         append: true
+
+    - name: Verify Docker Compose is available
+      ansible.builtin.shell:
+        cmd: >-
+          if command -v docker-compose >/dev/null 2>&1; then
+            docker-compose --version;
+          else
+            docker compose version;
+          fi
+      args:
+        executable: /bin/bash
+      register: docker_compose_version
+      changed_when: false
+      failed_when: docker_compose_version.rc != 0
+      when: ansible_facts.os_family in ["Debian", "Suse"]

@@ -68,7 +68,7 @@ docker version
 docker compose version
 ```
 
-If the Ubuntu image does not include the Docker Compose plugin, install the package appropriate to the selected image before continuing. The exact package name can vary by Ubuntu release.
+On Ubuntu images using the distribution Docker packages, the Compose v2 package is `docker-compose-v2`. The Ansible Docker playbook installs and verifies it automatically. Red Hat-family images are currently treated as Docker-only compatibility cases because their repositories do not consistently provide the required Compose package.
 
 ## Prepare the application directory
 

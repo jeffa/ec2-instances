@@ -4,6 +4,54 @@ This Compose project runs the supplied Laminas application with PHP 8.1/Apache a
 
 The application source and `.env` file are intentionally ignored by Git. The runtime configuration reads database credentials from the container environment, so `config/autoload/local.php` does not need to be included in the source tarball.
 
+## Scripted EC2 workflow
+
+The repository contains separate local and remote scripts under `bin/laminas-dev/`. Run the local scripts from the repository root after Docker has been provisioned on the EC2 instance:
+
+The remote scripts automatically use either the Docker Compose v2 plugin (`docker compose`) or the standalone Compose command (`docker-compose`).
+
+```bash
+export EC2_HOST=<EC2-public-IP-or-DNS>
+export EC2_USER=ec2-user
+
+bin/laminas-dev/local/01-package-stack.sh
+bin/laminas-dev/local/02-copy-stack.sh
+bin/laminas-dev/local/03-copy-payloads.sh
+```
+
+The local scripts copy only the deployment configuration and the two ignored payloads. They do not use Git on the EC2 instance.
+
+Connect to the instance and run the remote scripts in order:
+
+```bash
+ssh "$EC2_USER@$EC2_HOST"
+```
+
+Run these commands on the EC2 instance. The archive must be extracted before the remote scripts are available:
+
+```bash
+mkdir -p ~/laminas-dev
+tar -xzf ~/laminas-dev-stack.tar.gz -C ~/laminas-dev --strip-components=1
+
+cd ~/laminas-dev
+bash remote/02-create-env.sh
+nano .env
+bash remote/03-extract-app.sh
+bash remote/04-build-image.sh
+bash remote/05-start-database.sh
+bash remote/06-restore-database.sh
+bash remote/07-start-application.sh
+bash remote/08-verify.sh
+```
+
+Because the archive extracts its contents directly into `~/laminas-dev`, the `remote/01-extract-stack.sh` helper is useful when the stack archive is copied into a different location or when the standard extraction needs to be repeated:
+
+```bash
+bash ~/laminas-dev/remote/01-extract-stack.sh
+```
+
+Do not run the database restore more than once against an already-populated volume unless the dump is intended to be re-applied. For a clean disposable rebuild, use `docker compose down -v` from `~/laminas-dev` first.
+
 ## Prepare the application
 
 From this directory, extract the ignored source payload into `app/`:
@@ -46,7 +94,7 @@ set -a
 set +a
 
 docker compose up -d db
-gzip -dc ../laminas-input/horsensns_safari-dev.sql.gz | \
+gzip -dc ../laminas-input/horsesns_safari-dev.sql.gz | \
   docker compose exec -T db mariadb -uroot -p"$DB_ROOT_PASSWORD"
 
 docker compose up -d app
