@@ -147,9 +147,9 @@ The generated inventory is owned by Terraform and is removed when its Terraform 
 
 These are worth knowing before investing more time in the current implementation:
 
-1. **The child modules are duplicated.** The five module directories contain almost the same resource, variables, and outputs. A bug fix or security change must be repeated five times.
+1. **The active EC2 module is data-driven.** The supported images and login users are defined in one server matrix, and one reusable module creates the selected instances.
 
-2. **`*.modules` is not Terraform source.** Terraform loads `.tf` files, not `main.modules`, `variables.modules`, or `outputs.modules`. Those files appear to be an intended shared module implementation, but Terraform will ignore them. The real behavior is in `modules/*/*.tf`.
+2. **Legacy duplicate modules were removed.** The old distribution-specific module directories and `.modules` files were not loaded by Terraform and have been removed to prevent future edits from targeting inactive code.
 
 3. **Inventory is generated from Terraform data.** A single generated file avoids per-instance append/remove races, stale entries, and platform-specific `sed` cleanup.
 
