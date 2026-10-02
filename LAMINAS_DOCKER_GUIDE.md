@@ -56,8 +56,8 @@ terraform output
 Install Docker using the existing Ansible playbook after Terraform has generated the inventory:
 
 ```bash
-ansible all -m ping
-ansible-playbook ansible/docker.yaml
+ansible all -i ansible-hosts -m ping
+ansible-playbook -i ansible-hosts ansible/docker.yaml
 ```
 
 SSH to the instance and verify Docker:

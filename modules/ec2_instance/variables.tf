@@ -4,12 +4,12 @@ variable "instance_type" {
 }
 
 variable "security_groups" {
-  description = "List of Security Group IDs to allow open ports."
+  description = "List of security group IDs to allow open ports."
   type        = list(string)
 }
 
 variable "ssh_rsa" {
-  description = "The public key to inject into server's known hosts file."
+  description = "The public SSH key to inject into the server."
   type        = string
 }
 
@@ -19,12 +19,11 @@ variable "ami" {
 }
 
 variable "username" {
-  description = "The name of default user on distro."
+  description = "The default login user on the image."
   type        = string
-  default     = "ec2-user"
 }
 
 variable "instance_name" {
-  description = "Tag Name to assign."
+  description = "The Name tag to assign."
   type        = string
 }

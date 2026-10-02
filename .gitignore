@@ -7,6 +7,7 @@ terraform.tfstate.backup
 TODO
 install-wp.sh
 composer.json
+ansible-hosts
 .env
 .env.*
 *.tfvars

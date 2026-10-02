@@ -22,7 +22,7 @@ This is my starter kit for launching any number of Linux flavors for the purpose
 
 * After running Terraform you should be able to immediately ssh into the instance(s) created. TF will "slurp" the contents of your SSH public key file and add them as authorized keys on the EC2 instance. TF will also perform a key scan on the newly obtained EC2 instance's IP address and add it as a known host on your local machine.
 
-* After running Ansible you should be able to use Docker and access the web server running on port 80. TF will first add the newly created EC2 instance's metadata as an Ansible inventory item to the inventory file (and subsequently remove it on destroy). Docker and nginx are separate playbooks, so either can be run independently.
+* After running Ansible you should be able to use Docker and access the web server running on port 80. Terraform generates a complete `ansible-hosts` inventory from the selected instances. Docker and nginx are separate playbooks, so either can be run independently.
 
 * The default instance type is the free `t2.micro` but I recommend to always be in the habit of immediately destroying the instance(s) rather than leaving them running unattended.
 
@@ -38,12 +38,7 @@ Dependencies
 * generate credentials for your AWS account
 * create security groups for SSH and HTTP access
 * create a public key for SSH access
-* uses `/etc/ansible/hosts` for Ansible inventory:
-```
-sudo mkdir /etc/ansible
-sudo touch /etc/ansible/hosts
-sudo chown -R $USER /etc/ansible/
-```
+* uses the Terraform-generated `ansible-hosts` file for Ansible inventory
 * export vars:
 
 ```
@@ -69,8 +64,9 @@ Runbook Example
 ```
 terraform plan -out run.me
 terraform apply run.me
-ansible-playbook ansible/docker.yaml
-ansible-playbook ansible/nginx.yaml
+ansible all -i ansible-hosts -m ping
+ansible-playbook -i ansible-hosts ansible/docker.yaml
+ansible-playbook -i ansible-hosts ansible/nginx.yaml
 terraform show | grep '_ssh =' | cut -d= -f2 | xargs -n1 curl -I
 # terraform destroy -auto-approve
 ```
@@ -78,4 +74,4 @@ terraform show | grep '_ssh =' | cut -d= -f2 | xargs -n1 curl -I
 Known Issues
 ------------
 * The Suse package installer zypper is failing to install nginx.
-* Copious overusage of `sleep` to reduce chances of race conditions 
+* Terraform waits for SSH readiness with a retry loop; inventory is generated as one complete file

@@ -17,9 +17,9 @@ Terraform configuration
         v
 EC2 instance with the local public key in authorized_keys
         |
-        | local-exec: wait, ssh-keyscan, append inventory line
+        | Terraform-generated inventory file
         v
-local Ansible inventory (/etc/ansible/hosts in the checked-in modules)
+local Ansible inventory (`ansible-hosts` by default)
         |
         | ansible-playbook ansible/docker.yaml
         | ansible-playbook ansible/nginx.yaml
@@ -63,15 +63,11 @@ export TF_VAR_http_security_group="sg-yyyyyyyyyyyyyyyyy"
 
 The AWS provider can also use the normal AWS CLI credential chain. In a modernization, prefer that approach over passing a credentials-file path as a Terraform variable.
 
-The checked-in child modules currently write to `/etc/ansible/hosts`, regardless of the root variable named `ansible_inv_path`. Create that file if using the repository exactly as it stands:
+Terraform now generates the inventory at the path in `ansible_inv_path`, which defaults to the project-local `ansible-hosts` file:
 
 ```bash
-sudo mkdir -p /etc/ansible
-sudo touch /etc/ansible/hosts
-sudo chown "$USER" /etc/ansible/hosts
+ansible all -i ansible-hosts -m ping
 ```
-
-This requires a macOS-compatible `sed` command during destroy; the checked-in command uses `sed -i ""`, which is appropriate for macOS but not GNU/Linux.
 
 ### Select distributions
 
@@ -115,21 +111,21 @@ ssh <username>@<public-ip>
 
 The login names are normally `ec2-user` for Amazon Linux, `admin` for Debian in this project, `ec2-user` for Red Hat and SUSE, and `ubuntu` for Ubuntu. Verify these assumptions against the selected AMIs.
 
-The instance user data appends the public key to the image user's `authorized_keys`. Terraform also runs `ssh-keyscan` after a fixed 60-second sleep and appends the result to the local `known_hosts`. A fixed sleep is only a guess: an instance can be ready sooner or later.
+The instance user data appends the public key to the image user's `authorized_keys`. Terraform polls TCP port 22 with a bounded retry loop. The generated inventory uses `StrictHostKeyChecking=accept-new` for these disposable hosts, and Ansible then waits for a usable connection before gathering facts.
 
 ### Run Ansible
 
 Once Terraform has completed and the hosts are reachable:
 
 ```bash
-ansible all -m ping
+ansible all -i ansible-hosts -m ping
 
 # Run either playbook or both, independently
-ansible-playbook ansible/docker.yaml
-ansible-playbook ansible/nginx.yaml
+ansible-playbook -i ansible-hosts ansible/docker.yaml
+ansible-playbook -i ansible-hosts ansible/nginx.yaml
 ```
 
-The repository's playbook uses `hosts: ungrouped`, so `ansible all -m ping` is a useful first check but the playbook itself will use the ungrouped entries. After the playbook succeeds, request port 80 from each public IP, or use the output values to construct a URL:
+The repository's playbook uses `hosts: ungrouped`, so `ansible all -i ansible-hosts -m ping` is a useful first check but the playbook itself will use the ungrouped entries. After the playbook succeeds, request port 80 from each public IP, or use the output values to construct a URL:
 
 ```bash
 curl -I http://<public-ip>/
@@ -145,23 +141,23 @@ When finished, release the instances and their hourly charges:
 terraform destroy
 ```
 
-The destroy-time provisioners attempt to remove the corresponding inventory lines. Check the inventory afterward because provisioners are best-effort local side effects and can fail independently of AWS destruction.
+The generated inventory is owned by Terraform and is removed when its Terraform resource is destroyed. It is ignored by Git and should not be edited manually.
 
 ## Important limitations in the checked-in code
 
 These are worth knowing before investing more time in the current implementation:
 
-1. **The child modules are duplicated.** The five module directories contain almost the same resource, variables, and outputs. A bug fix or security change must be repeated five times.
+1. **The active EC2 module is data-driven.** The supported images and login users are defined in one server matrix, and one reusable module creates the selected instances.
 
-2. **`*.modules` is not Terraform source.** Terraform loads `.tf` files, not `main.modules`, `variables.modules`, or `outputs.modules`. Those files appear to be an intended shared module implementation, but Terraform will ignore them. The real behavior is in `modules/*/*.tf`.
+2. **Legacy duplicate modules were removed.** The old distribution-specific module directories and `.modules` files were not loaded by Terraform and have been removed to prevent future edits from targeting inactive code.
 
-3. **Inventory is a side effect, not Terraform data.** Appending to a shared file from several `local-exec` provisioners creates ordering, permission, stale-entry, and concurrent-run problems. Destroying an instance can also remove the wrong line if identifiers or quoting change.
+3. **Inventory is generated from Terraform data.** A single generated file avoids per-instance append/remove races, stale entries, and platform-specific `sed` cleanup.
 
-4. **The inventory path variable is disconnected.** `variables.tf` declares `ansible_inv_path`, but the checked-in child modules hard-code `/etc/ansible/hosts`. Passing `TF_VAR_ansible_inv_path` therefore does not make the modules use another path.
+4. **The inventory path is configurable.** `ansible_inv_path` controls the generated inventory location and defaults to the project-local `ansible-hosts` file.
 
-5. **SSH host-key handling is convenient but weak.** `ssh-keyscan` records a key without independently authenticating it. It also appends duplicates on repeated runs. For a disposable lab, `StrictHostKeyChecking=accept-new` or a generated per-run known-hosts file is simpler; for anything important, use a trusted host-key process.
+5. **SSH host-key handling is appropriate only for the disposable lab.** The generated inventory uses `StrictHostKeyChecking=accept-new`, so new keys are accepted without polluting the user's global `known_hosts`. For anything important, use a trusted host-key process.
 
-6. **Readiness is encoded as sleeps.** The 60-second SSH sleep and random destroy delay are race-condition workarounds. They make runs slow and still do not prove that cloud-init, SSH, or the package repositories are ready.
+6. **Readiness uses bounded retries.** Terraform polls for SSH readiness, and Ansible uses `wait_for_connection` before gathering facts. Package repository readiness remains an operating-system-specific concern.
 
 7. **The AMIs and provider configuration are old-style inputs.** AMI IDs age, differ by region and architecture, and may have changing default users. The AWS provider constraint is also pinned to the old 3.x major line and there is no committed dependency lock file.
 
