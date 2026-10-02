@@ -28,6 +28,19 @@ You need:
 
 The EC2 security groups should allow TCP 22 only from your IP address and TCP 80 from wherever you will test the application. Do not open TCP 3306.
 
+## Provisioning decisions from `composer.json`
+
+The supplied application dependency file establishes the following starting configuration:
+
+- use PHP 8.2; the application allows PHP 8.1, 8.2, and 8.3
+- use the normal Laminas `public/` document root
+- enable the `pdo_mysql` PHP extension for `laminas-db` and MariaDB access
+- install production dependencies without the development/test packages
+- allow Composer's post-install script to clear Laminas' merged configuration cache
+- do not use the application's `serve` script for the EC2 deployment; it starts PHP's development server on port 8080
+
+The dependency file does not identify the application's actual database configuration or credentials. Before starting the containers, locate the Laminas configuration files that define the database adapter and determine how environment-specific values are loaded. The container should receive those values through environment variables or an untracked local configuration file, not through source code or the Docker image.
+
 ## Create the EC2 host
 
 Use the existing Terraform project with one Ubuntu server:
@@ -103,11 +116,11 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www/html
 COPY . .
 
-RUN composer install --no-interaction --prefer-dist --optimize-autoloader
+RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
 RUN chown -R www-data:www-data /var/www/html
 ```
 
-The application may require a different PHP minor version, additional system libraries, PHP extensions, or a different web-server configuration. Confirm those requirements from `composer.json`, the existing deployment notes, and the production environment before building the image.
+The application may require additional system libraries, PHP extensions, or a different web-server configuration. Confirm those requirements from the application source and production environment before building the image. If the source includes `composer.lock`, keep it with the source tarball so Composer installs the tested dependency versions. The `--no-dev` flag excludes PHPUnit, Psalm, code-style tools, and other development-only packages from the runtime image.
 
 The `public/` document root is the normal Laminas arrangement. If this application uses another document root, change `APACHE_DOCUMENT_ROOT` and the Apache configuration accordingly.
 
@@ -154,7 +167,7 @@ volumes:
   db-data:
 ```
 
-The exact environment-variable names must match the Laminas application's configuration. The database hostname inside Compose is `db`, not `localhost` and not the EC2 public IP.
+The exact environment-variable names must match the Laminas application's configuration. The database hostname inside Compose is `db`, not `localhost` and not the EC2 public IP. The placeholder `DB_*` variables above are not automatically used by Laminas unless the application configuration reads those names; update either the Compose environment section or the application configuration as needed.
 
 Create `~/laminas-lab/.env` with temporary values:
 
@@ -238,6 +251,7 @@ After importing, restart the application and clear any application cache using t
 
 ```bash
 docker compose restart app
+docker compose exec app php bin/clear-config-cache.php
 ```
 
 ## Application-specific items to confirm
