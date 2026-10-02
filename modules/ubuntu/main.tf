@@ -21,7 +21,7 @@ resource "aws_instance" "host" {
     }
 
     provisioner "local-exec" {
-      command = "sleep $((RANDOM % 20)); sed -i \"\" '/${self.id}/d' /etc/ansible/hosts"
+      command = "sed -i \"\" '/${self.id}/d' /etc/ansible/hosts"
       when = destroy
     }
 }
