@@ -11,7 +11,7 @@ variable "id_rsa_path" {
 variable "ansible_inv_path" {
   description = "Location of local Ansible inventory file."
   type        = string
-  default     = "/etc/ansible/hosts"
+  default     = "ansible-hosts"
 }
 
 variable "aws_region" {
@@ -41,4 +41,3 @@ variable "instance_type" {
   type        = string
   default     = "t2.micro"
 }
-
