@@ -114,7 +114,7 @@ The preferred container design is to keep credentials in an untracked `.env` fil
 ```dotenv
 DB_HOST=db
 DB_NAME=horsesns_safari
-DB_USER=laminas
+DB_USER=horsesns_safari
 DB_PASSWORD=temporary-development-password
 ```
 

@@ -173,8 +173,8 @@ Create `~/laminas-lab/.env` with temporary values:
 
 ```dotenv
 APP_ENV=development
-DB_NAME=laminas_lab
-DB_USER=laminas
+DB_NAME=horsesns_safari
+DB_USER=horsesns_safari
 DB_PASSWORD=replace-with-a-temporary-password
 DB_ROOT_PASSWORD=replace-with-a-different-temporary-password
 ```

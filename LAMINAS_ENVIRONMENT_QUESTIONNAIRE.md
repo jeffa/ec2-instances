@@ -104,6 +104,8 @@ Database engine: ___MariahDB_____________________________________
 Production version: __10.6.28_____________________________________
 Test version: __________________________________________________
 Database name: _____horsesns_safari_____________________________
+Database username: _horsesns_safari_______________________________
+Original OS/filesystem username: _horsesns________________________
 Character set/collation: ________________________________________
 SQL mode requirements: __________________________________________
 Database configuration file(s): _________________________________
