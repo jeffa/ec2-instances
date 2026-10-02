@@ -10,6 +10,8 @@ For a disposable Laminas/PHP/MariaDB Docker deployment guide, see [LAMINAS_DOCKE
 
 For the Laminas environment planning checklist, see [LAMINAS_ENVIRONMENT_QUESTIONNAIRE.md](LAMINAS_ENVIRONMENT_QUESTIONNAIRE.md).
 
+For Laminas database credential and local configuration guidance, see [LAMINAS_SECRET_CONFIGURATION_GUIDE.md](LAMINAS_SECRET_CONFIGURATION_GUIDE.md).
+
 For AMI discovery strategies and image lifecycle guidance, see [AMI_DISCOVERY_GUIDE.md](AMI_DISCOVERY_GUIDE.md).
 
 Description
