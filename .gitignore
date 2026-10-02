@@ -7,3 +7,12 @@ terraform.tfstate.backup
 TODO
 install-wp.sh
 composer.json
+.env
+.env.*
+*.tfvars
+*.tfvars.json
+*.pem
+*.key
+*.sql
+*.sql.gz
+*.tar.gz
