@@ -6,6 +6,8 @@ For a detailed walkthrough, code review, limitations, and recommendations for a 
 
 For the step-by-step WordPress Docker deployment guide, see [WORDPRESS_DOCKER_GUIDE.md](WORDPRESS_DOCKER_GUIDE.md).
 
+For a disposable Laminas/PHP/MariaDB Docker deployment guide, see [LAMINAS_DOCKER_GUIDE.md](LAMINAS_DOCKER_GUIDE.md).
+
 Description
 -----------
 Launch ssh ready EC2 instances via Terrform and provision them with Ansible (installs Docker and nginx).
