@@ -111,7 +111,7 @@ ssh <username>@<public-ip>
 
 The login names are normally `ec2-user` for Amazon Linux, `admin` for Debian in this project, `ec2-user` for Red Hat and SUSE, and `ubuntu` for Ubuntu. Verify these assumptions against the selected AMIs.
 
-The instance user data appends the public key to the image user's `authorized_keys`. Terraform polls `ssh-keyscan` with a bounded retry loop and records the host key after SSH responds. Ansible then waits for a usable connection before gathering facts.
+The instance user data appends the public key to the image user's `authorized_keys`. Terraform polls TCP port 22 with a bounded retry loop. The generated inventory uses `StrictHostKeyChecking=accept-new` for these disposable hosts, and Ansible then waits for a usable connection before gathering facts.
 
 ### Run Ansible
 
@@ -155,7 +155,7 @@ These are worth knowing before investing more time in the current implementation
 
 4. **The inventory path is configurable.** `ansible_inv_path` controls the generated inventory location and defaults to the project-local `ansible-hosts` file.
 
-5. **SSH host-key handling is convenient but weak.** `ssh-keyscan` records a key without independently authenticating it. It also appends duplicates on repeated runs. For a disposable lab, `StrictHostKeyChecking=accept-new` or a generated per-run known-hosts file is simpler; for anything important, use a trusted host-key process.
+5. **SSH host-key handling is appropriate only for the disposable lab.** The generated inventory uses `StrictHostKeyChecking=accept-new`, so new keys are accepted without polluting the user's global `known_hosts`. For anything important, use a trusted host-key process.
 
 6. **Readiness uses bounded retries.** Terraform polls for SSH readiness, and Ansible uses `wait_for_connection` before gathering facts. Package repository readiness remains an operating-system-specific concern.
 
