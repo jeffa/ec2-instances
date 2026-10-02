@@ -8,6 +8,8 @@ For the step-by-step WordPress Docker deployment guide, see [WORDPRESS_DOCKER_GU
 
 For a disposable Laminas/PHP/MariaDB Docker deployment guide, see [LAMINAS_DOCKER_GUIDE.md](LAMINAS_DOCKER_GUIDE.md).
 
+For the dedicated Laminas development Docker stack, see [laminas-dev/README.md](laminas-dev/README.md).
+
 For the Laminas environment planning checklist, see [LAMINAS_ENVIRONMENT_QUESTIONNAIRE.md](LAMINAS_ENVIRONMENT_QUESTIONNAIRE.md).
 
 For Laminas database credential and local configuration guidance, see [LAMINAS_SECRET_CONFIGURATION_GUIDE.md](LAMINAS_SECRET_CONFIGURATION_GUIDE.md).
