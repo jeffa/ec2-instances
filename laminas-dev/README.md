@@ -10,6 +10,32 @@ The repository contains separate local and remote scripts under `bin/laminas-dev
 
 The remote scripts automatically use either the Docker Compose v2 plugin (`docker compose`) or the standalone Compose command (`docker-compose`).
 
+For the shorter workflow, run the local wrapper from the repository root:
+
+```bash
+export EC2_HOST=<EC2-public-IP-or-DNS>
+export EC2_USER=ubuntu
+bin/laminas-dev/local/04-deploy.sh
+```
+
+Then connect to EC2, create/edit `.env`, and run the remote wrapper:
+
+```bash
+ssh "$EC2_USER@$EC2_HOST"
+cd ~/laminas-dev
+bash remote/99-deploy-wrapper.sh
+nano .env
+bash remote/99-deploy-wrapper.sh
+```
+
+The remote wrapper calls the existing numbered scripts without modifying them. It skips the database import on later runs after creating `~/laminas-dev/.db-restored`; use `FORCE_DB_RESTORE=1 bash remote/99-deploy-wrapper.sh` only when intentionally reapplying the dump. If the database volume is deleted with `docker compose down -v`, remove the marker before restoring:
+
+```bash
+rm -f ~/laminas-dev/.db-restored
+```
+
+### Manual script-by-script workflow
+
 ```bash
 export EC2_HOST=<EC2-public-IP-or-DNS>
 export EC2_USER=ec2-user
