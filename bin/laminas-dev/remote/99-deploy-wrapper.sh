@@ -82,7 +82,7 @@ set -a
 . ./.env
 set +a
 
-session_table_count="$(compose exec -e MYSQL_PWD="$DB_ROOT_PASSWORD" -T db mariadb -uroot -N -B \
+session_table_count="$(compose exec -e MYSQL_PWD="$DB_PASSWORD" -T db mariadb -u"$DB_USER" -N -B \
   -e "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='${DB_NAME}' AND table_name='tblSessions';" \
   | tr -d '[:space:]')"
 
