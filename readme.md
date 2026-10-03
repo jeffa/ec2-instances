@@ -10,24 +10,24 @@ Projects
 --------
 
 * **EC2 laboratory:** shared Terraform, Ansible, AMI, inventory, and compatibility-testing resources.
-* **WordPress / Kabler School for Dogs:** [project entry point](projects/wordpress/README.md) and [Docker guide](WORDPRESS_DOCKER_GUIDE.md).
+* **WordPress / Kabler School for Dogs:** [project entry point](projects/wordpress/README.md) and [Docker guide](projects/wordpress/WORDPRESS_DOCKER_GUIDE.md).
 * **Laminas / Safari Run:** [project entry point](projects/laminas-safari/README.md), [Docker stack](laminas-dev/README.md), and [deployment scripts](bin/laminas-dev/).
 
 For a detailed walkthrough, code review, limitations, and recommendations for a Docker/EC2 split, see [PROJECT_REVIEW.md](PROJECT_REVIEW.md).
 
-For the step-by-step WordPress Docker deployment guide, see [WORDPRESS_DOCKER_GUIDE.md](WORDPRESS_DOCKER_GUIDE.md).
+For the step-by-step WordPress Docker deployment guide, see [projects/wordpress/WORDPRESS_DOCKER_GUIDE.md](projects/wordpress/WORDPRESS_DOCKER_GUIDE.md).
 
-For a disposable Laminas/PHP/MariaDB Docker deployment guide, see [LAMINAS_DOCKER_GUIDE.md](LAMINAS_DOCKER_GUIDE.md).
+For a disposable Laminas/PHP/MariaDB Docker deployment guide, see [projects/laminas-safari/LAMINAS_DOCKER_GUIDE.md](projects/laminas-safari/LAMINAS_DOCKER_GUIDE.md).
 
 For the dedicated Laminas development Docker stack, see [laminas-dev/README.md](laminas-dev/README.md).
 
-For the recommended HTTPS, DNS, Elastic IP, and Caddy design, see [LAMINAS_HTTPS_GUIDE.md](LAMINAS_HTTPS_GUIDE.md).
+For the recommended HTTPS, DNS, Elastic IP, and Caddy design, see [projects/laminas-safari/LAMINAS_HTTPS_GUIDE.md](projects/laminas-safari/LAMINAS_HTTPS_GUIDE.md).
 
 The no-Git EC2 transfer workflow is split into [local](bin/laminas-dev/local) and [remote](bin/laminas-dev/remote) scripts.
 
-For the Laminas environment planning checklist, see [LAMINAS_ENVIRONMENT_QUESTIONNAIRE.md](LAMINAS_ENVIRONMENT_QUESTIONNAIRE.md).
+For the Laminas environment planning checklist, see [projects/laminas-safari/LAMINAS_ENVIRONMENT_QUESTIONNAIRE.md](projects/laminas-safari/LAMINAS_ENVIRONMENT_QUESTIONNAIRE.md).
 
-For Laminas database credential and local configuration guidance, see [LAMINAS_SECRET_CONFIGURATION_GUIDE.md](LAMINAS_SECRET_CONFIGURATION_GUIDE.md).
+For Laminas database credential and local configuration guidance, see [projects/laminas-safari/LAMINAS_SECRET_CONFIGURATION_GUIDE.md](projects/laminas-safari/LAMINAS_SECRET_CONFIGURATION_GUIDE.md).
 
 For AMI discovery strategies and image lifecycle guidance, see [AMI_DISCOVERY_GUIDE.md](AMI_DISCOVERY_GUIDE.md).
 

@@ -6,11 +6,11 @@ commands remain unchanged.
 
 ## Current entry points
 
-- [Laminas Docker guide](../../LAMINAS_DOCKER_GUIDE.md)
+- [Laminas Docker guide](LAMINAS_DOCKER_GUIDE.md)
 - [Laminas development stack](../../laminas-dev/README.md)
 - [Local deployment scripts](../../bin/laminas-dev/local/)
 - [Remote deployment scripts](../../bin/laminas-dev/remote/)
-- [Production roadmap](../../LAMINAS_PRODUCTION_ROADMAP.md)
+- [Production roadmap](LAMINAS_PRODUCTION_ROADMAP.md)
 - [Shared EC2 laboratory](../../readme.md)
 
 Run the local deployment scripts from the repository root. The remote scripts are

@@ -5,7 +5,7 @@ The existing files have not been moved so current commands remain unchanged.
 
 ## Current entry points
 
-- [WordPress Docker guide](../../WORDPRESS_DOCKER_GUIDE.md)
+- [WordPress Docker guide](WORDPRESS_DOCKER_GUIDE.md)
 - [Canonical install helper](install.sh)
 - [Legacy compatibility wrapper](../../install-wp.sh)
 - [Shared EC2 laboratory](../../readme.md)

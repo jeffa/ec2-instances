@@ -26,7 +26,7 @@ The WordPress work is a disposable Docker deployment experiment.
 
 | Area | Current location |
 | --- | --- |
-| Deployment guide | `WORDPRESS_DOCKER_GUIDE.md` |
+| Deployment guide | `projects/wordpress/WORDPRESS_DOCKER_GUIDE.md` |
 | Canonical install helper | `projects/wordpress/install.sh` |
 | Legacy compatibility entry point | `install-wp.sh` |
 | Project notes | `projects/wordpress/` |
@@ -45,7 +45,7 @@ development and integration testing.
 | Local deployment scripts | `bin/laminas-dev/local/` |
 | Remote deployment scripts | `bin/laminas-dev/remote/` |
 | Ignored source and database payloads | `laminas-input/` |
-| Project guides | `LAMINAS_*.md`, `laminas-dev/README.md` |
+| Project guides | `projects/laminas-safari/LAMINAS_*.md`, `laminas-dev/README.md` |
 | Project notes | `projects/laminas-safari/` |
 
 The Laminas scripts must continue to be run from the repository root. The current
