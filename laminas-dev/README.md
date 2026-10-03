@@ -99,6 +99,8 @@ chmod 600 .env
 
 Edit `.env` and replace both temporary passwords. Keep these values private even though this environment is disposable.
 
+The legacy mailer and CAPTCHA code also reads the email and CAPTCHA values listed in `.env.example`. Populate them from the backend/operations configuration before testing password resets or CAPTCHA-protected forms. Do not commit those values.
+
 ## Build and start
 
 ```bash

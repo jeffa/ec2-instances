@@ -13,6 +13,24 @@ if (!defined('DEMO_MODE')) {
     );
 }
 
+$legacyConstants = [
+    'EMAIL_ADDRESS',
+    'EMAIL_PASSWORD',
+    'EMAIL_NAME',
+    'EMAIL_SERVER_NAME',
+    'EMAIL_SERVER_HOST',
+    'CORPORATE_EMAIL_ADDRESS',
+    'CORPORATE_EMAIL_NAME',
+    'RECAPTCHA_SITE_KEY',
+    'RECAPTCHA_SECRET_KEY',
+];
+
+foreach ($legacyConstants as $constantName) {
+    if (!defined($constantName)) {
+        define($constantName, getenv($constantName) ?: '');
+    }
+}
+
 return [
     'view_manager' => [
         'base_path' => $basePath,

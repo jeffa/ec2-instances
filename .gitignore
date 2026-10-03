@@ -9,6 +9,7 @@ TODO
 install-wp.sh
 composer.json
 ansible-hosts
+private/
 .env
 .env.*
 *.tfvars

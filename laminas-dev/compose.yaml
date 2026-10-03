@@ -33,6 +33,15 @@ services:
       DB_NAME: ${DB_NAME}
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
+      EMAIL_ADDRESS: ${EMAIL_ADDRESS:-}
+      EMAIL_PASSWORD: ${EMAIL_PASSWORD:-}
+      EMAIL_NAME: ${EMAIL_NAME:-}
+      EMAIL_SERVER_NAME: ${EMAIL_SERVER_NAME:-}
+      EMAIL_SERVER_HOST: ${EMAIL_SERVER_HOST:-}
+      CORPORATE_EMAIL_ADDRESS: ${CORPORATE_EMAIL_ADDRESS:-}
+      CORPORATE_EMAIL_NAME: ${CORPORATE_EMAIL_NAME:-}
+      RECAPTCHA_SITE_KEY: ${RECAPTCHA_SITE_KEY:-}
+      RECAPTCHA_SECRET_KEY: ${RECAPTCHA_SECRET_KEY:-}
     volumes:
       - ./runtime-config/local.php:/var/www/html/config/autoload/local.php:ro
     healthcheck:
