@@ -35,6 +35,12 @@ services:
       DB_PASSWORD: ${DB_PASSWORD}
     volumes:
       - ./runtime-config/local.php:/var/www/html/config/autoload/local.php:ro
+    healthcheck:
+      test: ["CMD", "php", "-r", "$$s=@fsockopen('127.0.0.1',80); exit($$s ? 0 : 1);"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 10s
 
 volumes:
   db-data:

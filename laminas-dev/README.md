@@ -15,7 +15,7 @@ For the shorter workflow, run the local wrapper from the repository root:
 ```bash
 export EC2_HOST=<EC2-public-IP-or-DNS>
 export EC2_USER=ubuntu
-bin/laminas-dev/local/04-deploy.sh
+bin/laminas-dev/local/04-deploy-wrapper.sh
 ```
 
 Then connect to EC2, create/edit `.env`, and run the remote wrapper:
@@ -28,10 +28,10 @@ nano .env
 bash remote/99-deploy-wrapper.sh
 ```
 
-The remote wrapper calls the existing numbered scripts without modifying them. It skips the database import on later runs after creating `~/laminas-dev/.db-restored`; use `FORCE_DB_RESTORE=1 bash remote/99-deploy-wrapper.sh` only when intentionally reapplying the dump. If the database volume is deleted with `docker compose down -v`, remove the marker before restoring:
+The remote wrapper calls the existing numbered scripts without modifying them. It waits for MariaDB and Apache readiness, checks for the `tblSessions` table before skipping the import, retries the HTTP check, and records output in `~/laminas-dev/deploy.log`. Use `FORCE_DB_RESTORE=1 bash remote/99-deploy-wrapper.sh` only when intentionally reapplying the dump. If the database volume is deleted with `docker compose down -v`, the schema check automatically triggers a new import:
 
 ```bash
-rm -f ~/laminas-dev/.db-restored
+tail -f ~/laminas-dev/deploy.log
 ```
 
 ### Manual script-by-script workflow

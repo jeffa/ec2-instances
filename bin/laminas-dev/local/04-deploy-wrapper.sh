@@ -13,4 +13,4 @@ remote_target="${ec2_user}@${EC2_HOST}"
 ssh "$remote_target" \
   'mkdir -p "$HOME/laminas-dev" && tar -xzf "$HOME/laminas-dev-stack.tar.gz" -C "$HOME/laminas-dev" --strip-components=1'
 
-printf '%s\n' 'Stack and payloads transferred; edit .env on EC2, then run remote/99-deploy.sh.'
+printf '%s\n' 'Stack and payloads transferred; edit .env on EC2, then run remote/99-deploy-wrapper.sh.'

@@ -20,5 +20,7 @@ ansible-hosts
 *.tar.gz
 /laminas-dev/app/
 /laminas-dev/.env
+/laminas-dev/.db-restored
+/laminas-dev/deploy.log
 !/laminas-dev/.env.example
 *.install
