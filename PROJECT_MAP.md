@@ -27,7 +27,8 @@ The WordPress work is a disposable Docker deployment experiment.
 | Area | Current location |
 | --- | --- |
 | Deployment guide | `WORDPRESS_DOCKER_GUIDE.md` |
-| Existing helper entry point | `install-wp.sh` |
+| Canonical install helper | `projects/wordpress/install.sh` |
+| Legacy compatibility entry point | `install-wp.sh` |
 | Project notes | `projects/wordpress/` |
 
 `install-wp.sh` remains in its current location for compatibility during this cleanup.
