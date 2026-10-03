@@ -123,6 +123,8 @@ The last command should confirm the PHP extensions required by the locked depend
 
 The source archive stores the application’s `assets/` directory beside `public/`, while the Apache document root is `public/`. The development image therefore links `public/assets` to the existing root-level directory so URLs such as `/assets/css/site.css` remain available.
 
+`APP_BASE_PATH=/` overrides the legacy `/safari2/` deployment prefix at runtime. Keep it set to `/` when the application is served from the domain root; use a value such as `/safari2` only when a reverse proxy intentionally serves the application beneath that subpath.
+
 ## Stop the stack
 
 ```bash

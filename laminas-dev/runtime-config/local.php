@@ -2,6 +2,8 @@
 
 $demoMode = getenv('DEMO_MODE');
 $demoMode = $demoMode === false ? '1' : $demoMode;
+$configuredBasePath = trim((string) (getenv('APP_BASE_PATH') ?: ''), '/');
+$basePath = $configuredBasePath === '' ? '/' : "/{$configuredBasePath}/";
 
 if (!defined('DEMO_MODE')) {
     define(
@@ -12,6 +14,10 @@ if (!defined('DEMO_MODE')) {
 }
 
 return [
+    'view_manager' => [
+        'base_path' => $basePath,
+        'base_url' => $basePath,
+    ],
     'db' => [
         'hostname' => getenv('DB_HOST') ?: 'db',
         'database' => getenv('DB_NAME') ?: 'horsesns_safari',
