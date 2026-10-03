@@ -2,6 +2,17 @@ EC2 Instances
 =================
 Terraform/Ansible starter kit for AWS
 
+This repository currently contains three related work areas. They are intentionally
+kept together for now, but their ownership and deployment entry points are documented
+in [PROJECT_MAP.md](PROJECT_MAP.md).
+
+Projects
+--------
+
+* **EC2 laboratory:** shared Terraform, Ansible, AMI, inventory, and compatibility-testing resources.
+* **WordPress / Kabler School for Dogs:** [project entry point](projects/wordpress/README.md) and [Docker guide](WORDPRESS_DOCKER_GUIDE.md).
+* **Laminas / Safari Run:** [project entry point](projects/laminas-safari/README.md), [Docker stack](laminas-dev/README.md), and [deployment scripts](bin/laminas-dev/).
+
 For a detailed walkthrough, code review, limitations, and recommendations for a Docker/EC2 split, see [PROJECT_REVIEW.md](PROJECT_REVIEW.md).
 
 For the step-by-step WordPress Docker deployment guide, see [WORDPRESS_DOCKER_GUIDE.md](WORDPRESS_DOCKER_GUIDE.md).

@@ -6,7 +6,6 @@ laminas-input
 terraform.tfstate
 terraform.tfstate.backup
 TODO
-install-wp.sh
 composer.json
 ansible-hosts
 private/
@@ -24,4 +23,5 @@ private/
 /laminas-dev/.db-restored
 /laminas-dev/deploy.log
 !/laminas-dev/.env.example
+/projects/wordpress/wordpress.env
 *.install
