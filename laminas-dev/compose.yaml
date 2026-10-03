@@ -27,6 +27,7 @@ services:
       - "80:80"
     environment:
       APPLICATION_ENV: ${APPLICATION_ENV:-development}
+      DEMO_MODE: ${DEMO_MODE:-1}
       DB_HOST: ${DB_HOST:-db}
       DB_NAME: ${DB_NAME}
       DB_USER: ${DB_USER}

@@ -34,8 +34,10 @@ COPY apache-vhost.conf /etc/apache2/sites-available/000-default.conf
 WORKDIR /var/www/html
 COPY app/ /var/www/html/
 
-RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader \
+RUN composer install --no-interaction --prefer-dist --optimize-autoloader \
     && mkdir -p data/cache \
+    && ln -s /var/www/html/module/Application/src/Controller/Helper/PHPMailer /var/www/html/PHPMailer \
+    && ln -s /var/www/html/assets /var/www/html/public/assets \
     && chown -R www-data:www-data /var/www/html
 
 EXPOSE 80

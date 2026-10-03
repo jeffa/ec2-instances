@@ -114,10 +114,14 @@ docker compose up -d
 curl -I http://localhost/
 docker compose logs --tail=100 app
 docker compose exec app php -m
-docker compose exec app composer check-platform-reqs --no-dev
+docker compose exec app composer check-platform-reqs
 ```
 
-The last command should confirm the PHP extensions required by the locked dependency set. The image includes the application’s expected extensions, including `pdo_mysql`, `intl`, `mbstring`, `gd`, `soap`, XML/DOM, cURL, and ZIP.
+The last command should confirm the PHP extensions required by the locked dependency set. This development image intentionally installs Composer development dependencies because the application registers `Laminas\\DeveloperTools`, which is declared under `require-dev`. The image includes the application’s expected extensions, including `pdo_mysql`, `intl`, `mbstring`, `gd`, `soap`, XML/DOM, cURL, and ZIP.
+
+`DEMO_MODE=1` is passed into the application and converted to the legacy PHP `DEMO_MODE` constant by the runtime-only configuration. The image also provides a compatibility symlink for the bundled PHPMailer code, whose current legacy `require` statements expect `/var/www/html/PHPMailer`. The long-term source fix is to replace those relative `require` paths with paths based on `__DIR__` or Composer autoloading.
+
+The source archive stores the application’s `assets/` directory beside `public/`, while the Apache document root is `public/`. The development image therefore links `public/assets` to the existing root-level directory so URLs such as `/assets/css/site.css` remain available.
 
 ## Stop the stack
 

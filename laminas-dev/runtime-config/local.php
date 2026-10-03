@@ -1,5 +1,16 @@
 <?php
 
+$demoMode = getenv('DEMO_MODE');
+$demoMode = $demoMode === false ? '1' : $demoMode;
+
+if (!defined('DEMO_MODE')) {
+    define(
+        'DEMO_MODE',
+        filter_var($demoMode, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE)
+            ?? ((int) $demoMode === 1)
+    );
+}
+
 return [
     'db' => [
         'hostname' => getenv('DB_HOST') ?: 'db',
