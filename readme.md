@@ -89,12 +89,19 @@ terraform plan -out run.me
 terraform apply run.me
 ansible all -i ansible-hosts -m ping
 ansible-playbook -i ansible-hosts ansible/docker.yaml --limit ubuntu
+ansible-playbook -i ansible-hosts ansible/buildx.yaml --limit ubuntu
 ansible-playbook -i ansible-hosts ansible/nginx.yaml --limit suse
 terraform show | grep '_ssh =' | cut -d= -f2 | xargs -n1 curl -I
 # terraform destroy -auto-approve
 ```
 
 Run Docker and nginx against the distributions that support the capability being tested. The `--limit` examples above prevent one unsupported combination from blocking unrelated tests.
+
+The Buildx playbook is optional. Run it only on hosts that need to build container
+images. It defaults to Ubuntu/Debian distribution packages (`docker-buildx` and
+`docker-compose-v2`). For hosts installed from Docker's official Docker CE repository,
+use `-e docker_package_source=official` so it installs
+`docker-buildx-plugin` and `docker-compose-plugin` instead.
 
 Known Issues
 ------------

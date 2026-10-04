@@ -1,0 +1,57 @@
+---
+- name: Install and verify Docker Buildx
+  hosts: ungrouped
+  become: true
+  gather_facts: true
+  vars:
+    # Use "official" when Docker was installed from Docker's Docker CE
+    # repository. The default matches Ubuntu's distribution packages.
+    docker_package_source: distro
+    buildx_package_by_source:
+      distro: docker-buildx
+      official: docker-buildx-plugin
+    compose_package_by_source:
+      distro: docker-compose-v2
+      official: docker-compose-plugin
+
+  pre_tasks:
+    - name: Validate the Docker package source selection
+      ansible.builtin.assert:
+        that:
+          - docker_package_source in buildx_package_by_source
+        fail_msg: >-
+          docker_package_source must be either "distro" or "official",
+          not {{ docker_package_source }}.
+
+    - name: Require a Debian-family host
+      ansible.builtin.assert:
+        that:
+          - ansible_facts.os_family == "Debian"
+        fail_msg: >-
+          This standalone Buildx playbook currently supports Debian-family hosts
+          only; received {{ ansible_facts.distribution }} ({{ ansible_facts.os_family }}).
+
+  tasks:
+    - name: Install Buildx and Docker Compose packages
+      ansible.builtin.apt:
+        name:
+          - "{{ buildx_package_by_source[docker_package_source] }}"
+          - "{{ compose_package_by_source[docker_package_source] }}"
+        state: present
+        update_cache: true
+
+    - name: Verify Docker Buildx
+      ansible.builtin.command: docker buildx version
+      register: docker_buildx_version
+      changed_when: false
+
+    - name: Verify Docker Compose v2
+      ansible.builtin.command: docker compose version
+      register: docker_compose_version
+      changed_when: false
+
+    - name: Display Docker Buildx and Compose versions
+      ansible.builtin.debug:
+        msg:
+          - "{{ docker_buildx_version.stdout }}"
+          - "{{ docker_compose_version.stdout }}"
