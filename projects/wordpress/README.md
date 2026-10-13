@@ -24,3 +24,22 @@ ${EDITOR:-vi} projects/wordpress/wordpress.env
 The helper also accepts `WORDPRESS_ENV_FILE=/path/to/file` when a different secret
 file is preferred. The password is no longer stored in the script. Because the old
 credential existed in the old local script, it should not be reused.
+
+## Local deployment wrapper
+
+After Terraform and the Ansible Docker playbook have prepared an Ubuntu instance,
+the local wrapper can copy the helper and environment file, verify Docker, and start
+the deployment remotely:
+
+```bash
+cp projects/wordpress/wordpress.env.example projects/wordpress/wordpress.env
+${EDITOR:-vi} projects/wordpress/wordpress.env
+
+export EC2_HOST=<EC2-public-IP-or-DNS>
+export EC2_USER=ubuntu
+bin/wordpress/deploy.sh
+```
+
+The wrapper does not run Terraform, install Docker, destroy resources, or remove
+existing containers. It expects Docker to have already been provisioned and stops if
+Docker is unavailable for the SSH user.

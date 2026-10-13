@@ -17,6 +17,37 @@ Do not add Compose, custom images, reverse proxies, HTTPS, or automated deployme
 
 You need an Ubuntu EC2 instance with Docker installed, SSH access, and security-group rules allowing TCP 22 from your IP address and TCP 80 from the internet. Keep SSH restricted to your own address. The commands below use placeholder passwords. Replace them with temporary values and do not commit real passwords to Git.
 
+## Automated deployment wrapper
+
+After Terraform and the Ansible Docker playbook have prepared the Ubuntu instance,
+the local deployment wrapper can copy the helper and environment file and launch the
+WordPress containers remotely. Run it from the repository root:
+
+```bash
+cp projects/wordpress/wordpress.env.example \
+  projects/wordpress/wordpress.env
+
+${EDITOR:-vi} projects/wordpress/wordpress.env
+
+export EC2_HOST=<EC2-public-IP-or-DNS>
+export EC2_USER=ubuntu
+
+bin/wordpress/deploy.sh
+```
+
+The wrapper performs the following actions:
+
+1. Checks that the local environment file exists.
+2. Verifies that Docker is available to the remote SSH user.
+3. Creates `~/wordpress-test/projects/wordpress` on the instance.
+4. Copies the deployment helper and environment file.
+5. Applies restrictive permissions to the environment file.
+6. Launches the MySQL and WordPress containers.
+
+It does not run Terraform, install Docker, destroy AWS resources, or remove existing
+containers. The manual commands below remain useful for troubleshooting or when
+running the containers directly on an already-prepared host.
+
 ## The architecture
 
 ```text
