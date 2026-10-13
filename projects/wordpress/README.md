@@ -42,4 +42,40 @@ bin/wordpress/deploy.sh
 
 The wrapper does not run Terraform, install Docker, destroy resources, or remove
 existing containers. It expects Docker to have already been provisioned and stops if
-Docker is unavailable for the SSH user.
+Docker is unavailable for the SSH user. It also transfers the theme-asset helper so
+that later asset deployments can reuse the existing remote tool.
+
+## Deploy theme assets
+
+To transfer and install a theme asset ZIP into the running WordPress container, use
+the local asset wrapper from the repository root:
+
+```bash
+export EC2_HOST=<EC2-public-IP-or-DNS>
+export EC2_USER=ubuntu
+
+bin/wordpress/deploy-assets.sh \
+  /path/to/kabler-school-for-dogs-assets.zip
+```
+
+The ZIP should contain this directory structure:
+
+```text
+kabler-school-for-dogs/
+└── assets/
+    ├── css/
+    ├── js/
+    └── ...
+```
+
+The optional second argument changes the theme slug:
+
+```bash
+bin/wordpress/deploy-assets.sh /path/to/theme-assets.zip another-theme-slug
+```
+
+The wrapper transfers the ZIP and
+`projects/wordpress/deploy-theme-assets.sh` to the EC2 instance, extracts the
+archive in a temporary directory, copies the assets into the theme, and applies
+`www-data:www-data` ownership. It does not rebuild or restart the WordPress
+container.

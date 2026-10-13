@@ -32,11 +32,13 @@ ssh "$remote_target" "mkdir -p \"\$HOME/$remote_dir/projects/wordpress\""
 printf 'Copying WordPress deployment files...\n'
 scp "$repo_root/projects/wordpress/install.sh" \
   "$remote_target:~/$remote_dir/projects/wordpress/install.sh"
+scp "$repo_root/projects/wordpress/deploy-theme-assets.sh" \
+  "$remote_target:~/$remote_dir/projects/wordpress/deploy-theme-assets.sh"
 scp "$env_file" \
   "$remote_target:~/$remote_dir/projects/wordpress/wordpress.env"
 
 printf 'Launching WordPress on %s...\n' "$remote_target"
-ssh "$remote_target" "chmod 700 \"\$HOME/$remote_dir/projects/wordpress/install.sh\" && chmod 600 \"\$HOME/$remote_dir/projects/wordpress/wordpress.env\" && cd \"\$HOME/$remote_dir\" && WORDPRESS_ENV_FILE=\"\$PWD/projects/wordpress/wordpress.env\" bash projects/wordpress/install.sh"
+ssh "$remote_target" "chmod 700 \"\$HOME/$remote_dir/projects/wordpress/install.sh\" \"\$HOME/$remote_dir/projects/wordpress/deploy-theme-assets.sh\" && chmod 600 \"\$HOME/$remote_dir/projects/wordpress/wordpress.env\" && cd \"\$HOME/$remote_dir\" && WORDPRESS_ENV_FILE=\"\$PWD/projects/wordpress/wordpress.env\" bash projects/wordpress/install.sh"
 
 printf '%s\n' 'WordPress deployment completed.'
 printf 'Open http://%s/ in a browser.\n' "$EC2_HOST"
