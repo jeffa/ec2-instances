@@ -48,6 +48,29 @@ It does not run Terraform, install Docker, destroy AWS resources, or remove exis
 containers. The manual commands below remain useful for troubleshooting or when
 running the containers directly on an already-prepared host.
 
+## Run the canonical helper directly
+
+The canonical helper is [`projects/wordpress/install.sh`](install.sh). The automated
+wrapper copies it to the EC2 instance, but it can also be run directly when the
+deployment files are already present or when troubleshooting a previous deployment.
+
+On the EC2 instance:
+
+```bash
+cd ~/wordpress-test
+
+chmod 700 projects/wordpress/install.sh
+chmod 600 projects/wordpress/wordpress.env
+
+WORDPRESS_ENV_FILE="$PWD/projects/wordpress/wordpress.env" \
+  bash projects/wordpress/install.sh
+```
+
+The helper creates the Docker network and named volumes if needed, then starts the
+`wp-db` and `wordpress` containers. It does not create the EC2 instance, install
+Docker, or remove existing containers. If containers with those names already exist,
+inspect them first rather than rerunning the helper blindly.
+
 ## The architecture
 
 ```text
