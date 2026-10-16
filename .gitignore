@@ -25,3 +25,5 @@ private/
 !/laminas-dev/.env.example
 /projects/wordpress/wordpress.env
 *.install
+foo.*
+*.tmp
