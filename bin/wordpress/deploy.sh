@@ -34,8 +34,8 @@ scp "$repo_root/projects/wordpress/install.sh" \
   "$remote_target:~/$remote_dir/projects/wordpress/install.sh"
 scp "$repo_root/projects/wordpress/deploy-theme-assets.sh" \
   "$remote_target:~/$remote_dir/projects/wordpress/deploy-theme-assets.sh"
-scp "$repo_root/projects/wordpress/kabler-provisioner.sh" \
-  "$remote_target:~/$remote_dir/projects/wordpress/kabler-provisioner.sh"
+scp "$repo_root/projects/wordpress/provision-kabler.sh" \
+  "$remote_target:~/$remote_dir/projects/wordpress/provision-kabler.sh"
 scp "$repo_root/projects/wordpress/provision-kabler.php" \
   "$remote_target:~/$remote_dir/projects/wordpress/provision-kabler.php"
 scp "$env_file" \
@@ -44,7 +44,7 @@ scp "$env_file" \
 exit
 
 printf 'Launching WordPress on %s...\n' "$remote_target"
-ssh "$remote_target" "chmod 700 \"\$HOME/$remote_dir/projects/wordpress/install.sh\" \"\$HOME/$remote_dir/projects/wordpress/deploy-theme-assets.sh\" \"\$HOME/$remote_dir/projects/wordpress/kabler-provisioner.sh\" && chmod 600 \"\$HOME/$remote_dir/projects/wordpress/wordpress.env\" \"\$HOME/$remote_dir/projects/wordpress/provision-kabler.php\" && cd \"\$HOME/$remote_dir\" && WORDPRESS_ENV_FILE=\"\$PWD/projects/wordpress/wordpress.env\" bash projects/wordpress/install.sh"
+ssh "$remote_target" "chmod 700 \"\$HOME/$remote_dir/projects/wordpress/install.sh\" \"\$HOME/$remote_dir/projects/wordpress/deploy-theme-assets.sh\" \"\$HOME/$remote_dir/projects/wordpress/provision-kabler.sh\" && chmod 600 \"\$HOME/$remote_dir/projects/wordpress/wordpress.env\" \"\$HOME/$remote_dir/projects/wordpress/provision-kabler.php\" && cd \"\$HOME/$remote_dir\" && WORDPRESS_ENV_FILE=\"\$PWD/projects/wordpress/wordpress.env\" bash projects/wordpress/install.sh"
 
 printf '%s\n' 'WordPress deployment completed.'
 printf 'Open http://%s/ in a browser.\n' "$EC2_HOST"

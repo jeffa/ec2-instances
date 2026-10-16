@@ -173,5 +173,8 @@ if ( isset( $locations['primary'] ) ) {
 
 update_option( 'show_on_front', 'page' );
 update_option( 'page_on_front', $page_ids['home'] );
+global $wp_rewrite;
+$wp_rewrite->set_permalink_structure( '/%postname%/' );
+flush_rewrite_rules( false );
 
 WP_CLI::success( sprintf( 'Provisioned %d pages and rebuilt the %s menu.', count( $page_ids ), $menu_name ) );
